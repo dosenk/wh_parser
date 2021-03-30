@@ -20,10 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use("/", function (request, response, next) {
-//   const mainR = new indexRouter(io, "data");
-//   mainR.render(response);
-// });
+app.use("/", function (request, response, next) {
+  const mainR = new indexRouter(io, "data");
+  mainR.render(response);
+});
 
 app.use("/qr", function (request, response, next) {
   const connectR = new WhatsAppRouter(io);
