@@ -1,5 +1,5 @@
 const { app, server } = require("./bin/www");
-const socket = require("./controller/socket.controller");
+const io = require("./controller/socket.controller");
 const express = require("express");
 // console.log(app);
 const createError = require("http-errors");
@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index.router");
-// const connectRouter = require("./routes/connect");
+const WhatsAppRouter = require("./routes/whatsapp.router");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -20,13 +20,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", function (request, response, next) {
-  const main = new indexRouter(socket, "data");
-  main.sendData();
-  main.render(response);
-});
+// app.use("/", function (request, response, next) {
+//   const mainR = new indexRouter(io, "data");
+//   mainR.render(response);
+// });
 
-// app.use("/con", connectRouter);
+app.use("/qr", function (request, response, next) {
+  const connectR = new WhatsAppRouter(io);
+  connectR.start();
+  response.send("asd");
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
