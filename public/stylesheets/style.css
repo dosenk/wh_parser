@@ -1,8 +1,32 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 a {
   color: #00B7FF;
+}
+
+.block{
+  width: 100vw;
+  height: 100vh;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block-btn{
+  outline: none;
+  border: 1px solid black;
+  cursor: pointer;
+  width: 150px;
+  height: 75px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.block-btn:active {
+  background-color: darkgray;
 }
