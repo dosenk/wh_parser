@@ -3,6 +3,7 @@ const SOCKET_SERVER = "http://localhost:3000";
 class WhatsApp {
   constructor() {
       this.button = document.querySelector('.block-btn');
+      this.img = document.querySelector('.block-img');
       this.addListener();
   }
 
@@ -12,18 +13,22 @@ class WhatsApp {
       });
   }
 
+  showImage(img){
+    this.img.src = `http://localhost:3000/qrs/${img}`;
+    this.img.style.display = 'inline-block';
+  }
+
   async request(nameObject) {
       const body = JSON.stringify({
         name: nameObject
       });
 
       const response = await fetch('http://localhost:3000/qr', {
-          method: 'post',
+          method: 'get',
           headers: {
             Accept: 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
-          },
-          body,
+          }
         })
           .then((res) => console.log(res));
       return response;
@@ -46,7 +51,9 @@ class SocketIoClient {
       console.log(1)
     });
     this.socket.on('qr', (img) => {
-      console.log('hello');
+      this.whatsApp.button.style.display = 'none';
+      this.whatsApp.showImage(img);
+      console.log(img);
     });
   }
   sendMessage = (msg) => {
