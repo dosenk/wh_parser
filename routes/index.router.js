@@ -3,8 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 class Main {
-  constructor(socket, data) {
-    this.socket = socket;
+  constructor(data) {
+    // this.socket = socket;
     this.data = data;
   }
 
