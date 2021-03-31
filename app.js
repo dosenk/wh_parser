@@ -1,5 +1,4 @@
 const { app, server } = require("./bin/www");
-const io = require("./controller/socket.controller");
 const express = require("express");
 // console.log(app);
 const createError = require("http-errors");
@@ -20,15 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use("/", function (request, response, next) {
-//   const mainR = new indexRouter(io, "data");
-//   mainR.render(response);
-// });
+app.use("/qr", WhatsAppRouter);
 
-app.use("/qr", function (request, response, next) {
-  const connectR = new WhatsAppRouter(io);
-  connectR.start();
-  response.send("asd");
+app.use("/", function (request, response, next) {
+  const mainR = new indexRouter("data");
+  mainR.render(response);
 });
 
 // catch 404 and forward to error handler

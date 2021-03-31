@@ -1,19 +1,11 @@
 var express = require("express");
 var router = express.Router();
+const io = require("../controller/socket.controller");
 const WhatsAppController = require("../controller/whatsapp.controller");
 
-class WhatsAppRouter {
-  constructor(io) {
-    this.io = io;
-  }
+router.get("/", async (req, res) => {
+  const whContr = new WhatsAppController(io);
+  res.send("asdasdasd");
+});
 
-  start() {
-    // router.get("/", async (req, res) => {
-
-    // });
-    const whContr = new WhatsAppController(this.io);
-    // whContr.start();
-  }
-}
-
-module.exports = WhatsAppRouter;
+module.exports = router;

@@ -16,7 +16,7 @@ class WhatsAppController {
         "base64"
       );
 
-      this.sendQrClient(imageBuffer);
+      this.sendQrClient(imageBuffer, sessionId);
 
       // пишет qr в файл
       fs.writeFileSync(
@@ -26,14 +26,14 @@ class WhatsAppController {
     });
   }
 
-  sendQrClient(imageBuffer) {
+  sendQrClient(imageBuffer, sessionId) {
     console.log("send qr to client");
-    this.io.emit("qr", imageBuffer.toString("base64"));
+    this.io.emit("qr", `qr_code${sessionId ? "_" + sessionId : ""}.png`);
   }
 
   async getQr() {
     create({
-      sessionId: "name",
+      sessionId: "name2",
       qrLogSkip: false,
       useChrome: true,
       sessionDataPath: "./sessions",
