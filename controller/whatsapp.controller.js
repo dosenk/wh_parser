@@ -20,7 +20,7 @@ class WhatsAppController {
 
       // пишет qr в файл
       fs.writeFileSync(
-        `qr_code${sessionId ? "_" + sessionId : ""}.png`,
+        `qrs/qr_code${sessionId ? "_" + sessionId : ""}.png`,
         imageBuffer
       );
     });
@@ -33,7 +33,7 @@ class WhatsAppController {
 
   async getQr() {
     create({
-      sessionId: "name2",
+      sessionId: "name22",
       qrLogSkip: false,
       useChrome: true,
       sessionDataPath: "./sessions",
