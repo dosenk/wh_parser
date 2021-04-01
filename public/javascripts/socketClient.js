@@ -1,9 +1,10 @@
 const SOCKET_SERVER = "http://localhost:3000";
-
+const EVENT_IMG = 'EVENT_IMG';
 class WhatsApp {
   constructor() {
     this.button = document.querySelector(".block-btn");
     this.img = document.querySelector(".block-img");
+    this.name = document.querySelector(".block-name");
     this.addListener();
   }
 
@@ -19,11 +20,11 @@ class WhatsApp {
     this.img.style.display = "inline-block";
   }
 
-  async request(nameObject) {
+  async request() {
     const body = JSON.stringify({
-      name: nameObject,
+      name: this.name.value,
     });
-
+    console.log(this.name.value)
     const response = await fetch("http://localhost:3000/qr", {
       method: "post",
       headers: {
@@ -51,10 +52,8 @@ class SocketIoClient {
     this.socket.on("connect", () => {
       console.log(1);
     });
-    this.socket.on("qr", (img) => {
-      // this.whatsApp.button.style.display = "none";
-      this.whatsApp.showImage(img);
-      console.log(img);
+    this.socket.on("qr", (event, img) => {
+      event === img ?  this.whatsApp.showImage(img) : console.log('erer');
     });
   }
   sendMessage = (msg) => {
