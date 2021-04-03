@@ -1,5 +1,6 @@
 var { create, Client, decryptMedia, ev } = require("@open-wa/wa-automate");
 const fs = require("fs");
+const EVENT_IMG = "EVENT_IMG";
 
 class WhatsAppController {
   constructor(io, name) {
@@ -26,7 +27,11 @@ class WhatsAppController {
   }
 
   sendQrClient(imageBuffer, sessionId) {
-    this.io.emit("qr", `qr_code${sessionId ? "_" + sessionId : ""}.png`);
+    this.io.emit(
+      "qr",
+      EVENT_IMG,
+      `qr_code${sessionId ? "_" + sessionId : ""}.png`
+    );
   }
 
   async getQr() {
