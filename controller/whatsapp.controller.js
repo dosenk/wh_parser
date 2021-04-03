@@ -1,13 +1,15 @@
-var { create, Client, decryptMedia, ev } = require("@open-wa/wa-automate");
+const { create, Client, ev } = require("@open-wa/wa-automate");
 const fs = require("fs");
+// const { Parser } = require("webpack");
+const Parser = require("../controller/parser.controller");
 const EVENT_IMG = "EVENT_IMG";
 
 class WhatsAppController {
   constructor(io, name) {
     this.io = io;
     this.name = name;
+    this.ParserObj = new Parser(io);
     this.start();
-    this.getQr();
   }
 
   start() {
@@ -26,7 +28,7 @@ class WhatsAppController {
     });
   }
 
-  sendQrClient(imageBuffer, sessionId) {
+  sendQrClient(sessionId) {
     this.io.emit(
       "qr",
       EVENT_IMG,
@@ -40,24 +42,25 @@ class WhatsAppController {
       qrLogSkip: false,
       useChrome: true,
       sessionDataPath: "./sessions",
-      eventMode: true,
-    }).then((client) => {
-      this.listenWhEvents(client);
-    });
+      eventMode: false,
+    }).then(async (client) => this.ParserObj.start(client, this.name));
+    // this.listenWhEvents(client);
   }
 
-  async listenWhEvents(client) {
-    client.onAnyMessage(async (message) => {
-      console.log(message.body);
-      if (message.body === "Hi") {
-        await client.sendText(message.from, "👋 Hello!");
-      }
-      if (message.body === "Сколько время?") {
-        console.log(Date.now());
-        await client.sendText(message.from, Date.now());
-      }
-    });
-  }
+  // async listenWhEvents(client) {
+  //   console.log("qwe");
+  //   client.onAnyMessage(async (message) => {
+  //     console.log(1);
+  //     console.log(message);
+  //     if (message.body === "Hi") {
+  //       await client.sendText(message.from, "👋 Hello!");
+  //     }
+  //     if (message.body === "Сколько время?") {
+  //       console.log(Date.now());
+  //       await client.sendText(message.from, Date.now());
+  //     }
+  //   });
+  // }
 }
 
 module.exports = WhatsAppController;
