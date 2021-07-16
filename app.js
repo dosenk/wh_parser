@@ -1,13 +1,12 @@
 const { app, server } = require("./bin/www");
 const express = require("express");
-// console.log(app);
 const createError = require("http-errors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index.router");
-const WhatsAppRouter = require("./routes/whatsapp.router");
+const whatsappController = require("./controller/whatsapp.controller");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -22,7 +21,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/qrs", express.static(path.join(__dirname, "qrs")));
 
-app.use("/qr", WhatsAppRouter);
+// app.use("/qr", WhatsAppRouter);
 
 app.use("/", function (request, response, next) {
   const mainR = new indexRouter("data");
@@ -44,3 +43,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+const wh = new whatsappController(server);
+wh.start();

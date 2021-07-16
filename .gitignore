@@ -4,3 +4,9 @@ package-lock.json
 .node-persist
 qrs
 sessions
+.vscode
+
+# managed by open-wa
+**.data.json
+**.node-persist**
+# end managed by open-wa
