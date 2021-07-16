@@ -1,17 +1,28 @@
-const SOCKET_SERVER = "http://192.168.1.31:3000";
-const EVENT_IMG = "EVENT_IMG";
+// const SocketIoClient = require("./socketWhClient");
+import SocketIoClient from "./socketWhClient.js";
+
 class WhatsApp {
   constructor() {
     this.button = document.querySelector(".block-btn");
+    this.buttonLogout = document.querySelector(".block-btn-logout");
     this.img = document.querySelector(".block-img");
     this.name = document.querySelector(".block-name");
-    this.addListener();
+    this.socketClient = new SocketIoClient();
+    this.start();
   }
 
+  start() {
+    this.addListener();
+    this.socketClient.listenSocketEvents(this.showImage.bind(this));
+  }
   addListener() {
     this.button.addEventListener("click", () => {
       this.img.style.display = "none";
-      this.request("luntik");
+      this.request();
+    });
+    this.buttonLogout.addEventListener("click", () => {
+      // console.log(11111);
+      this.logout();
     });
   }
 
@@ -20,60 +31,15 @@ class WhatsApp {
     this.img.style.display = "inline-block";
   }
 
-  async request() {
-    const body = JSON.stringify({
-      name: this.name.value,
-    });
+  async logout() {
     console.log(this.name.value);
-    const response = await fetch("http://192.168.1.31:3000/qr", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body,
-    }).then((res) => console.log(res));
-    return response;
+    this.socketClient.sendToServer("wh", "logout", this.name.value);
+  }
+
+  async request() {
+    console.log(this.name.value);
+    this.socketClient.sendToServer("wh", "start", this.name.value);
   }
 }
 
-class SocketIoClient {
-  constructor() {
-    this.socket = io(SOCKET_SERVER, { transports: ["websocket", "polling"] });
-    //, { transports: ["websocket", "polling"] }
-    this.whatsApp = new WhatsApp();
-    this.listenSocketEvents();
-  }
-
-  sendName(name) {
-    this.socket.emit("broadcast", name);
-  }
-
-  listenSocketEvents() {
-    this.socket.on("connect", () => {
-      console.log(1);
-    });
-
-    this.socket.on("qr", (event, img) => {
-      event === EVENT_IMG ? this.whatsApp.showImage(img) : console.log("erer");
-    });
-
-    this.socket.on("messanges", (event, msg, name) => {
-      // event: MSG_COUNT or MSG_NUMS
-      if (event === "MSG_NUMS") {
-        //общее количество сообщений в чате
-        console.log(msg);
-      }
-      if (event === "MSG_COUNT") {
-        // когда спарсил сообщение сюда придет его порядковый  номер. 1, 2 , 3 и т.д.
-        console.log(msg, name);
-      }
-    });
-  }
-  sendMessage = (msg) => {
-    this.socket.emit("broadcast", msg);
-  };
-}
-
-const client = new SocketIoClient();
-// client.sendName('qwe');
+const socket = new WhatsApp();

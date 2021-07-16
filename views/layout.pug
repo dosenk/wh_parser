@@ -3,7 +3,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet", href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css")
+    //- link(href="/dist/css/tabulator_simple.min.css", rel="stylesheet")
+    script(type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js")
     script(src='https://cdn.socket.io/3.1.1/socket.io.min.js', integrity='sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO', crossorigin='anonymous')
-    script(src='./javascripts/socketClient.js' type='module')
+    script(src='./javascripts/wh.js' type='module')
   body
     block content

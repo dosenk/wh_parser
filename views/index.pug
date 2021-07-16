@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  div(class = 'block')
-    input(class = "block-name" type="text" value="")
-    button(class = 'block-btn') Нажми
-    img(class = 'block-img',src="#", alt="img")
+  div(id = 'root')
+    div(id = 'table')
+    div(class = 'qr')
+      p(class = 'qr__text') qr
+      img(class = 'block-img',src="#", alt="img")
 
